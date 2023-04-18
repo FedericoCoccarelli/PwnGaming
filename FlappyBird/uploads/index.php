@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $max_width = 50; // Larghezza massima
         $max_height = 50; // Altezza massima
 
-        if ($larghezza > $max_width || $altezza > $max_height) {
+        if ($width > $max_width || $height > $max_height) {
             echo "Errore: L'immagine supera la risoluzione massima consentita.";
         } else {
             // Upload file to the server
