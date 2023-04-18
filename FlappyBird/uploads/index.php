@@ -12,18 +12,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $allowTypes = array('jpg', 'jpeg', 'png', 'gif');
 
     if (in_array($fileType, $allowTypes)) {
-        // Upload file to the server
-        if (move_uploaded_file($_FILES["uploadedFile"]["tmp_name"], $targetFilePath)) {
-            // Call exiftool on the uploaded file to extract metadata
-            $exiftoolOutput = shell_exec('exiftool ' . $targetFilePath);
 
-            // Display the metadata to the user
-            echo "<pre>$exiftoolOutput</pre>";
-        } else{
-    		// There was an error uploading the file
-    		$lastError = error_get_last();
-    		echo "Error: " . $lastError['message'];
-	}
+        // Ottieni le dimensioni dell'immagine
+        $size = getimagesize($_FILES['uploadedFile']['tmp_name']);
+        $width = $size[0]; // Larghezza dell'immagine
+        $height = $size[1]; // Altezza dell'immagine
+
+        // Configura la risoluzione massima consentita
+        $max_width = 50; // Larghezza massima
+        $max_height = 50; // Altezza massima
+
+        if ($larghezza > $max_width || $altezza > $max_height) {
+            echo "Errore: L'immagine supera la risoluzione massima consentita.";
+        } else {
+            // Upload file to the server
+            if (move_uploaded_file($_FILES["uploadedFile"]["tmp_name"], $targetFilePath)) {
+                // Call exiftool on the uploaded file to extract metadata
+                $exiftoolOutput = shell_exec('exiftool ' . $targetFilePath);
+
+                // Display the metadata to the user
+                echo "<pre>$exiftoolOutput</pre>";
+            } else{
+    		    // There was an error uploading the file
+    		    $lastError = error_get_last();
+    		    echo "Error: " . $lastError['message'];
+	
+            }
+        }
+
     } else {
         echo 'Sorry, only JPG, JPEG, PNG, and GIF files are allowed to upload.';
     }
@@ -43,3 +59,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </body>
 </html>
+
