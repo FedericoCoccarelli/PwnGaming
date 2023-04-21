@@ -1,3 +1,3 @@
 <?php
-$imagename = "sheet.png"
+$imagename = "sprite.png"
 ?>
